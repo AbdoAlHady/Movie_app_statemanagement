@@ -1,9 +1,11 @@
-abstract class Failure {
-  final String message;
+import 'package:movie_app/core/network/error_model.dart';
 
-  Failure(this.message);
+abstract class Failure {
+  final ErrorModel errorModel;
+
+  Failure({required this.errorModel});
 }
 
 class ServerFailure extends Failure {
-  ServerFailure(super.message);
+  ServerFailure({required super.errorModel});
 }

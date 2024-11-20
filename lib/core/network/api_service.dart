@@ -10,7 +10,7 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio) = _ApiService;
 
-  @GET('${ApiConstants.person}/popular')
+  @GET('${ApiConstants.movie}/popular')
   Future<MoviesModel> getMovies(@Query('page') int page);
 
   @GET('${ApiConstants.genre}/movie/list')

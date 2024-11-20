@@ -20,7 +20,7 @@ class MovieApp extends StatelessWidget {
         return MaterialApp(
           navigatorKey: AppRouter.navigatorKey,
           onGenerateRoute: AppRouter().onGenerateRoute,
-          initialRoute: Routes.home,
+          initialRoute: Routes.splash,
           title: 'Flutter Demo',
           theme: AppTheme.lightTheme,
         );
