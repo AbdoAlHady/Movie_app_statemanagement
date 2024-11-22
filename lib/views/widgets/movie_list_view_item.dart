@@ -4,17 +4,19 @@ import 'package:movie_app/core/routing/routes.dart';
 import 'package:movie_app/core/theme/app_text_styles.dart';
 import 'package:movie_app/core/utils/app_icons.dart';
 import 'package:movie_app/core/widgets/favorite_button.dart';
+import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/views/widgets/home/genres_list_item.dart';
 import 'package:movie_app/views/widgets/movie_rating.dart';
-
 import '../../core/helpers/spacing.dart';
-import '../../core/utils/app_constants.dart';
 import '../../core/widgets/cached_image.dart';
 
 class MovieListViewItem extends StatelessWidget {
   const MovieListViewItem({
     super.key,
+    required this.movie,
   });
+
+  final MoivesResult movie;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class MovieListViewItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12.0),
           onTap: () {
-            context.pushNamed(Routes.movieDetails);
+            context.pushNamed(Routes.movieDetails, arguments: movie);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -35,8 +37,12 @@ class MovieListViewItem extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
-                  child: const CachedImage(
-                    imageUrl: AppConstants.imageurl,
+                  child: Hero(
+                    tag: movie.id!,
+                    child: CachedImage(
+                      imageUrl:
+                          "https://image.tmdb.org/t/p/w500${movie.backdropPath}",
+                    ),
                   ),
                 ),
                 horizontalSpacing(10),
@@ -46,12 +52,14 @@ class MovieListViewItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Killer',
+                        movie.title ?? "",
                         style: AppTextStyles.font20Bold,
                       ),
                       verticalSpacing(10),
-                      const MovieRating(),
-                      const GenresListItem(),
+                      MovieRating(
+                        voteAverage: movie.voteAverage ?? 0.0,
+                      ),
+                      GenresListItem(genresInt: movie.genreIds ?? []),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -61,12 +69,14 @@ class MovieListViewItem extends StatelessWidget {
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           horizontalSpacing(5),
-                          const Text(
-                            'Release Date',
-                            style: TextStyle(color: Colors.grey),
+                          Text(
+                            movie.releaseDate ?? "",
+                            style: const TextStyle(color: Colors.grey),
                           ),
                           const Spacer(),
-                          const FavoriteButton()
+                          FavoriteButton(
+                            movie: movie,
+                          )
                         ],
                       )
                     ],

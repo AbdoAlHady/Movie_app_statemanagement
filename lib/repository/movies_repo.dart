@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
+import 'package:movie_app/core/network/api_error_handler.dart';
 import 'package:movie_app/models/genres_model.dart';
 import 'package:movie_app/models/movies_model.dart';
 
@@ -15,7 +18,8 @@ class MoviesRepo {
       final movies = await _apiService.getMovies(page);
       return Right(movies);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      log("get movies errors: $e");
+      return Left(ServerFailure(ApiErrorHandler.hanlde(e).message!));
     }
   }
 
@@ -24,7 +28,7 @@ class MoviesRepo {
       final genres = await _apiService.getGenres();
       return Right(genres);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(ServerFailure(ApiErrorHandler.hanlde(e).message!));
     }
   }
 }

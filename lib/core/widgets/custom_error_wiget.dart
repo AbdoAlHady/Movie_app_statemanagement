@@ -22,7 +22,11 @@ class CustomErrorWidget extends StatelessWidget {
             color: Colors.red,
           ),
           verticalSpacing(20),
-          Text("Error: $errorText", style: AppTextStyles.font16Red),
+          Text(
+            "Error: $errorText",
+            style: AppTextStyles.font16Red,
+            textAlign: TextAlign.center,
+          ),
           verticalSpacing(10),
           ElevatedButton(
             onPressed: retryFuction,

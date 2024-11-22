@@ -18,6 +18,10 @@ class CachedImage extends StatelessWidget {
       height: height ?? context.width * 0.3,
       imageUrl: imageUrl,
       fit: fit ?? BoxFit.cover,
+      placeholder: (context, url) => SizedBox(
+        width: width ?? context.width * 0.2,
+        height: height ?? context.width * 0.3,
+      ),
       errorWidget: (context, url, error) => const Icon(AppIcons.error),
     );
   }

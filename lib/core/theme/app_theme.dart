@@ -14,7 +14,6 @@ abstract class AppTheme {
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.black,
       foregroundColor: Colors.white,
       elevation: 0,
     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/routing/routes.dart';
+import 'package:movie_app/views/widgets/home/theme_button.dart';
 
 import '../../core/utils/app_icons.dart';
 import '../../core/utils/app_strings.dart';
@@ -30,12 +31,7 @@ class HomeScreen extends StatelessWidget {
             Navigator.pushNamed(context, Routes.favorite);
           },
         ),
-        IconButton(
-          icon: const Icon(
-            AppIcons.darkMode,
-          ),
-          onPressed: () async {},
-        ),
+        const ThemeButton(),
       ],
     );
   }

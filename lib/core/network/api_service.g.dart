@@ -36,7 +36,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'person/popular',
+          'movie/popular',
           queryParameters: queryParameters,
           data: _data,
         )
