@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/core/helpers/extensions.dart';
 import 'package:movie_app/core/helpers/spacing.dart';
-import 'package:movie_app/core/utils/app_constants.dart';
 import 'package:movie_app/core/widgets/cached_image.dart';
 import 'package:movie_app/core/widgets/favorite_button.dart';
+import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/views/widgets/home/genres_list_item.dart';
 import 'package:movie_app/views/widgets/movie_rating.dart';
 
 import '../../../core/theme/app_text_styles.dart';
 
-class MovieDetailsScreenBody extends StatelessWidget {
-  const MovieDetailsScreenBody({super.key});
+class MovieDetailsScreenBody extends ConsumerWidget {
+  const MovieDetailsScreenBody({super.key, required this.movie});
+  final MoivesResult movie;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Stack(
         children: [
           CachedImage(
-            imageUrl: AppConstants.imageurl,
+            imageUrl: "https://image.tmdb.org/t/p/w500${movie.backdropPath}",
             width: double.infinity,
             height: context.height * 0.47,
           ),
@@ -41,17 +43,19 @@ class MovieDetailsScreenBody extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Movie Title",
+                                movie.title ?? "",
                                 style: AppTextStyles.font20Bold,
                               ),
                               verticalSpacing(10),
-                              const Row(
+                              Row(
                                 children: [
-                                  MovieRating(),
-                                  Spacer(),
+                                  MovieRating(
+                                    rating: movie.voteAverage ?? 0.0,
+                                  ),
+                                  const Spacer(),
                                   Text(
-                                    'Release Date',
-                                    style: TextStyle(color: Colors.grey),
+                                    movie.releaseDate ?? "",
+                                    style: const TextStyle(color: Colors.grey),
                                   ),
                                 ],
                               ),
@@ -59,7 +63,7 @@ class MovieDetailsScreenBody extends StatelessWidget {
                               const GenresListItem(),
                               verticalSpacing(10),
                               Text(
-                                "Overview" * 200,
+                                movie.overview ?? "",
                                 textAlign: TextAlign.justify,
                                 style: TextStyle(
                                   fontSize: 18.sp,
@@ -72,12 +76,12 @@ class MovieDetailsScreenBody extends StatelessWidget {
                     ),
                     Align(
                       child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
                           shape: BoxShape.circle,
                         ),
                         padding: const EdgeInsets.all(5),
-                        child: const FavoriteButton(),
+                        child: FavoriteButton(movie),
                       ),
                     ),
                   ],

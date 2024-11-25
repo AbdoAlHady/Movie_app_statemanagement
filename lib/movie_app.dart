@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/core/enums/theme_type.dart';
+import 'package:movie_app/view_model/theme_provider.dart';
 
 import 'core/routing/app_router.dart';
 import 'core/routing/routes.dart';
@@ -17,12 +20,20 @@ class MovieApp extends StatelessWidget {
 
       // Use builder only if you need to use library outside ScreenUtilInit context
       builder: (_, child) {
-        return MaterialApp(
-          navigatorKey: AppRouter.navigatorKey,
-          onGenerateRoute: AppRouter().onGenerateRoute,
-          initialRoute: Routes.home,
-          title: 'Flutter Demo',
-          theme: AppTheme.lightTheme,
+        return Consumer(
+          builder: (context, ref, child) {
+            final themeState = ref.watch(themeProvier);
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              navigatorKey: AppRouter.navigatorKey,
+              onGenerateRoute: AppRouter().onGenerateRoute,
+              initialRoute: Routes.home,
+              title: 'Flutter Demo',
+              theme: themeState == ThemeType.light
+                  ? AppTheme.lightTheme
+                  : AppTheme.darkTheme,
+            );
+          },
         );
       },
     );

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:movie_app/core/enums/theme_type.dart';
 import 'package:movie_app/core/routing/routes.dart';
+import 'package:movie_app/view_model/theme_provider.dart';
 
 import '../../core/utils/app_icons.dart';
 import '../../core/utils/app_strings.dart';
@@ -30,11 +33,20 @@ class HomeScreen extends StatelessWidget {
             Navigator.pushNamed(context, Routes.favorite);
           },
         ),
-        IconButton(
-          icon: const Icon(
-            AppIcons.darkMode,
-          ),
-          onPressed: () async {},
+        Consumer(
+          builder: (context, ref, child) {
+            final themeState = ref.watch(themeProvier);
+            return IconButton(
+              icon: Icon(
+                themeState == ThemeType.light
+                    ? AppIcons.darkMode
+                    : AppIcons.lightMode,
+              ),
+              onPressed: () async {
+                ref.read(themeProvier.notifier).changeTheme();
+              },
+            );
+          },
         ),
       ],
     );

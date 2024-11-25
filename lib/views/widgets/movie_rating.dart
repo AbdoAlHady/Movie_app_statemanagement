@@ -5,7 +5,9 @@ import 'package:movie_app/core/utils/app_icons.dart';
 class MovieRating extends StatelessWidget {
   const MovieRating({
     super.key,
+    required this.rating,
   });
+  final double rating;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,8 @@ class MovieRating extends StatelessWidget {
           color: Colors.yellow,
         ),
         horizontalSpacing(5),
-        const Text(
-          '9.0',
+        Text(
+          rating.toString(),
         ),
       ],
     );

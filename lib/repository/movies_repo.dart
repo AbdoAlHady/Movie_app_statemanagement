@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
+import 'package:movie_app/core/helpers/cache_helper.dart';
+import 'package:movie_app/core/network/api_error_handler.dart';
+import 'package:movie_app/core/utils/shared_pref_keys.dart';
 import 'package:movie_app/models/genres_model.dart';
 import 'package:movie_app/models/movies_model.dart';
 
@@ -15,7 +20,7 @@ class MoviesRepo {
       final movies = await _apiService.getMovies(page);
       return Right(movies);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(ServerFailure(ApiErrorHandler.hanlde(e).message!));
     }
   }
 
@@ -24,7 +29,25 @@ class MoviesRepo {
       final genres = await _apiService.getGenres();
       return Right(genres);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(ServerFailure(ApiErrorHandler.hanlde(e).message!));
     }
+  }
+
+  Future<List<MoivesResult>> getFavorites() async {
+    var stringList = CacheHelper().getDataList(key: SharedPrefKeys.favorites);
+    List<MoivesResult> movies =
+        stringList.map((e) => MoivesResult.fromJson(jsonDecode(e))).toList();
+    return Future.value(movies);
+  }
+
+  Future<void> saveFavorites(List<MoivesResult> movies) async {
+    List<String> stringList =
+        movies.map((e) => jsonEncode(e.toJson())).toList();
+    await CacheHelper()
+        .saveData(key: SharedPrefKeys.favorites, value: stringList);
+  }
+
+  void deleteFavorities() async {
+    await CacheHelper().removeData(key: SharedPrefKeys.favorites);
   }
 }
